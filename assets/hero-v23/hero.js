@@ -4,7 +4,7 @@
         CACHE_RADIUS = 60,
         PREFETCH_AHEAD = 15,
         framePath = (index) =>
-            `assets/img/frames-transparent/ezgif-frame-${String(index + 1).padStart(3, "0")}.png`,
+            `assets/img/frames-transparent/ezgif-frame-${String(index + 1).padStart(3, "0")}.webp`,
         frames = new Array(TOTAL_FRAMES),
         canvas = document.getElementById("heroCanvas"),
         ctx = canvas.getContext("2d"),
