@@ -1,108 +1,97 @@
 (() => {
-    const TOTAL_FRAMES = 160,
-        FIRST_BATCH = 100,
-        CACHE_RADIUS = 60,
-        PREFETCH_AHEAD = 15,
-        framePath = (index) =>
-            `assets/img/frames-transparent/ezgif-frame-${String(index + 1).padStart(3, "0")}.webp`,
-        frames = new Array(TOTAL_FRAMES),
-        canvas = document.getElementById("heroCanvas"),
-        ctx = canvas.getContext("2d"),
-        track = document.getElementById("track"),
-        loading = document.getElementById("loading"),
-        loaderBar = document.getElementById("loaderBar"),
-        loaderCount = document.getElementById("loaderCount");
-    let currentIndex = 0,
-        direction = 1;
-    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-    const loadFrame = (index) => {
-        if (index < 0 || index >= TOTAL_FRAMES || frames[index])
-            return Promise.resolve(frames[index]);
-        const image = new Image();
-        const task = new Promise((resolve) => {
-            image.onload = () => {
-                frames[index] = image;
-                resolve(image);
-            };
-            image.onerror = resolve;
+    const LAST_FRAME = 80;      // frames 0..80 are the only ones ever shown
+    const TOTAL_FRAMES = LAST_FRAME + 1;
+    const INITIAL_FRAMES = 12;  // needed before the loader hides
+    const framePath = (i) =>
+        `assets/img/frames-transparent/ezgif-frame-${String(i + 1).padStart(3, "0")}.webp`;
+
+    const frames = new Array(TOTAL_FRAMES);
+    const canvas = document.getElementById("heroCanvas");
+    const ctx = canvas.getContext("2d");
+    const track = document.getElementById("track");
+    const loading = document.getElementById("loading");
+    const loaderBar = document.getElementById("loaderBar");
+    const loaderCount = document.getElementById("loaderCount");
+
+    let currentIndex = 0;
+    let needsRedraw = true;
+    let cssW = 1, cssH = 1;
+
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    const loadFrame = (i) =>
+        new Promise((resolve) => {
+            if (frames[i]) return resolve(frames[i]);
+            const img = new Image();
+            img.decoding = "async";
+            img.src = framePath(i);
+            img.decode()
+                .then(() => {
+                    frames[i] = img;
+                    if (i === currentIndex) needsRedraw = true;
+                    resolve(img);
+                })
+                .catch(() => resolve(null));
         });
-        image.src = framePath(index);
-        return task;
+
+    // load a range with limited parallelism
+    const loadRange = async (start, end, limit, onProgress) => {
+        let next = start, done = 0;
+        const worker = async () => {
+            while (next <= end) {
+                const i = next++;
+                await loadFrame(i);
+                if (onProgress) onProgress(++done);
+            }
+        };
+        await Promise.all(Array.from({ length: limit }, worker));
     };
-    const prune = () => {
-        const low = Math.max(0, currentIndex - CACHE_RADIUS),
-            high = Math.min(TOTAL_FRAMES - 1, currentIndex + CACHE_RADIUS);
-        frames.forEach((image, index) => {
-            if (image && (index < low || index > high)) frames[index] = null;
-        });
-    };
-    const draw = (index) => {
-        const image = frames[index] || frames[currentIndex];
-        if (!image) return;
-        const ratio = Math.min(2, devicePixelRatio || 1),
-            rect = canvas.getBoundingClientRect(),
-            width = Math.max(1, rect.width),
-            height = Math.max(1, rect.height);
-        canvas.width = Math.floor(width * ratio);
-        canvas.height = Math.floor(height * ratio);
+
+    const resizeCanvas = () => {
+        const ratio = Math.min(2, devicePixelRatio || 1);
+        const rect = canvas.getBoundingClientRect();
+        cssW = Math.max(1, rect.width);
+        cssH = Math.max(1, rect.height);
+        canvas.width = Math.floor(cssW * ratio);
+        canvas.height = Math.floor(cssH * ratio);
         ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-        const scale = Math.min(
-            width / image.naturalWidth,
-            height / image.naturalHeight,
-        ),
-            drawWidth = image.naturalWidth * scale,
-            drawHeight = image.naturalHeight * scale;
-        ctx.clearRect(0, 0, width, height);
-        ctx.drawImage(
-            image,
-            width - drawWidth,
-            height - drawHeight,
-            drawWidth,
-            drawHeight,
-        );
+        needsRedraw = true;
     };
-    const queueAround = (index) => {
-        const low = Math.max(0, index - CACHE_RADIUS),
-            high = Math.min(
-                TOTAL_FRAMES - 1,
-                index + CACHE_RADIUS + PREFETCH_AHEAD * direction,
-            );
-        for (let i = low; i <= high; i++) loadFrame(i);
-        prune();
+
+    const draw = (index) => {
+        // fall back to the nearest already-loaded earlier frame
+        let image = null;
+        for (let i = index; i >= 0 && !image; i--) image = frames[i];
+        if (!image) return;
+        const scale = Math.min(cssW / image.naturalWidth, cssH / image.naturalHeight);
+        const w = image.naturalWidth * scale;
+        const h = image.naturalHeight * scale;
+        ctx.clearRect(0, 0, cssW, cssH);
+        ctx.drawImage(image, cssW - w, cssH - h, w, h);
     };
-    const setFrame = (index) => {
-        currentIndex = index;
-        draw(index);
-        queueAround(index);
-    };
-    const preloadFirst = async () => {
-        for (let index = 0; index < FIRST_BATCH; index++) {
-            await loadFrame(index);
-            loaderBar.style.width = `${((index + 1) / FIRST_BATCH) * 100}%`;
-            loaderCount.textContent = `${index + 1} / ${FIRST_BATCH}`;
-        }
-        draw(0);
-        loading.classList.add("is-done");
-        queueAround(0);
-    };
+
     const getFrameIndexFromScroll = (progress) => {
-        const reverseAt = 80,
-            rawIndex = Math.round(progress * (TOTAL_FRAMES - 1)),
-            offsetIndex = rawIndex + 1;
+        const reverseAt = 80;
+        const offsetIndex = Math.round(progress * 159) + 1;
         if (offsetIndex <= reverseAt) return offsetIndex;
-        const reverseIndex = reverseAt - (offsetIndex - reverseAt);
-        return clamp(reverseIndex, 1, reverseAt);
+        return clamp(reverseAt - (offsetIndex - reverseAt), 1, reverseAt);
     };
-    const updateFrame = () => {
-        const rect = track.getBoundingClientRect(),
-            travel = Math.max(1, track.offsetHeight - innerHeight),
-            progress = clamp(-rect.top / travel, 0, 1),
-            index = getFrameIndexFromScroll(progress);
-        direction = index >= currentIndex ? 1 : -1;
-        setFrame(index);
-        requestAnimationFrame(updateFrame);
+
+    const tick = () => {
+        const rect = track.getBoundingClientRect();
+        const travel = Math.max(1, track.offsetHeight - innerHeight);
+        const progress = clamp(-rect.top / travel, 0, 1);
+        const index = getFrameIndexFromScroll(progress);
+        if (index !== currentIndex || needsRedraw) {
+            currentIndex = index;
+            needsRedraw = false;
+            draw(index);
+        }
+        requestAnimationFrame(tick);
     };
-    addEventListener("resize", () => draw(currentIndex), { passive: true });
+
+    addEventListener("resize", resizeCanvas, { passive: true });
+
     gsap.registerPlugin(ScrollTrigger);
     if (typeof Lenis === "function") {
         const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
@@ -110,23 +99,27 @@
         gsap.ticker.add((time) => lenis.raf(time * 1000));
     }
     gsap.ticker.lagSmoothing(0);
-    gsap.utils.toArray(".reveal").forEach((element) =>
+
+    gsap.utils.toArray(".reveal").forEach((el) =>
         gsap.fromTo(
-            element,
+            el,
             { y: 30, opacity: 0 },
             {
-                y: 0,
-                opacity: 1,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: element,
-                    start: "top 82%",
-                    toggleActions: "play none none reverse",
-                },
+                y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                scrollTrigger: { trigger: el, start: "top 82%", toggleActions: "play none none reverse" },
             },
         ),
     );
-    
-    preloadFirst().then(updateFrame);
+
+    resizeCanvas();
+    loadRange(0, INITIAL_FRAMES - 1, 6, (n) => {
+        loaderBar.style.width = `${(n / INITIAL_FRAMES) * 100}%`;
+        loaderCount.textContent = `${n} / ${INITIAL_FRAMES}`;
+    }).then(() => {
+        draw(0);
+        loading.classList.add("is-done");
+        tick();
+        // the rest loads in the background while the user starts scrolling
+        loadRange(INITIAL_FRAMES, LAST_FRAME, 4);
+    });
 })();

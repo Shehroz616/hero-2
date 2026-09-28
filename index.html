@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="assets/css/services.css" />
     <link rel="stylesheet" href="assets/css/profit-calculator.css" />
     <link rel="stylesheet" href="assets/css/closing.css" />
+    <link rel="preload" as="image" href="assets/img/frames-transparent/ezgif-frame-001.webp" />
 </head>
 
 <body>
@@ -24,7 +25,7 @@
         <div class="loader">
             <div class="loader-top">
                 <div class="loader-title">BITCOIN<br />MINERS</div>
-                <div class="loader-count" id="loaderCount">0 / 40</div>
+                <div class="loader-count" id="loaderCount">0 / 12</div>
             </div>
             <div class="loader-line"><i id="loaderBar"></i></div>
             <div class="loader-note">Preparing the first movement</div>
@@ -148,237 +149,17 @@
             </div>
         </section>
 
-        <section class="services-explorer has-background-photo" aria-labelledby="services-heading">
-            <div class="services-heading reveal">
-                <p>OPERATIONS</p>
-                <h2 id="services-heading">Flexible service coverage for every miner lifecycle.</h2>
-            </div>
-            <div class="services-layout">
-                <div class="services-navigation">
-                    <div class="service-arrows" aria-label="Service navigation controls">
-                        <button type="button" aria-label="Previous service">&#8593;</button>
-                        <button type="button" aria-label="Next service">&#8595;</button>
-                    </div>
-
-                    <div class="services-list">
-                        <article class="service-panel">
-                            <button type="button" class="service-choice" aria-expanded="true">
-                                <span class="service-number">01</span>
-                                <span>Full-stack hosting <small>Containerized, monitored, secure</small></span>
-                                <b>+</b>
-                            </button>
-                            <div class="service-description">
-                                <p>Secure colocation with 24/7 remote health checks, environment monitoring, and rapid response paths for uptime-sensitive operators.</p>
-                            </div>
-                        </article>
-                        <article class="service-panel">
-                            <button type="button" class="service-choice" aria-expanded="false">
-                                <span class="service-number">02</span>
-                                <span>Board repair <small>Diagnostics and level-1 recovery</small></span>
-                                <b>+</b>
-                            </button>
-                            <div class="service-description">
-                                <p>Board-level fault isolation, thermal repair, and replacement planning to recover production where it matters most.</p>
-                            </div>
-                        </article>
-                        <article class="service-panel">
-                            <button type="button" class="service-choice" aria-expanded="false">
-                                <span class="service-number">03</span>
-                                <span>Fleet maintenance <small>Inspection, calibration, response</small></span>
-                                <b>+</b>
-                            </button>
-                            <div class="service-description">
-                                <p>Preventive maintenance schedules, power validation, and performance calibration to reduce downtime across large clusters.</p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-
-                <div class="service-photo-stage" aria-live="polite">
-                    <img class="service-photo is-active" src="assets/hero-v23/assets/scroll-miner/base.png" alt="Hosting facility with Bitcoin miners" />
-                    <img class="service-photo" src="assets/hero-v23/assets/scroll-miner/open.png" alt="Board repair workspace" />
-                    <img class="service-photo" src="assets/hero-v23/assets/scroll-miner/top.png" alt="Mining hardware maintenance" />
-                </div>
-            </div>
-        </section>
-
         
-
-        <section class="reviews-scroll-track">
-            <section class="reviews-section" id="navigation-target-4">
-                <div class="review-grid">
-                    <article class="review-card review-tall">
-                        <div class="review-top">
-                            <div class="quote-mark">“</div>
-                            <div class="stars" aria-label="5 stars">★★★★★</div>
-                        </div>
-                        <h3>We moved from a trial fleet to a multi-rig operation in 90 days.</h3>
-                        <p>Every machine was staged with traceable diagnostics, power balancing, and custom deployment checklists. The result was smoother commissioning and fewer surprises.</p>
-                        <div class="review-tags">
-                            <span>Hosting</span>
-                            <span>Stability</span>
-                            <span>ROI</span>
-                        </div>
-                        <div class="review-person">
-                            <div class="review-avatar">NG</div>
-                            <div><strong>Nicholas G.</strong><small>North Dakota facility</small></div>
-                        </div>
-                        <div class="buyer">Buyer</div>
-                        <div class="review-farm">
-                            <img src="assets/hero-v23/assets/scroll-miner/base.png" alt="Miner installation" />
-                            <img src="assets/hero-v23/assets/scroll-miner/open.png" alt="Mining hardware close-up" />
-                            <img src="assets/hero-v23/assets/scroll-miner/top.png" alt="Mining cabinet" />
-                            <img src="assets/hero-v23/assets/scroll-miner/sides.png" alt="Rack configuration" />
-                        </div>
-                    </article>
-
-                    <article class="review-card review-small-one">
-                        <div class="review-small-heading">
-                            <h3>Zero tolerance for downtime</h3>
-                            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 14c2-4 7-7 11-7 8 0 12 6 11 13-2 7-8 9-11 10-5-2-10-5-11-10Z" fill="none" stroke="currentColor" stroke-width="1.4" /><circle cx="16" cy="15" r="3" /></svg>
-                        </div>
-                        <div class="small-stars">★★★★★</div>
-                        <p>Our board-level repair workflow caught failures early and kept the farm online through a full summer heat cycle.</p>
-                        <div class="review-person">
-                            <div><strong>J. Alvarez</strong><small>Ops lead</small></div>
-                        </div>
-                    </article>
-
-                    <article class="review-card review-small-two">
-                        <div class="review-small-heading">
-                            <h3>Power draw under control</h3>
-                            <div class="stars">★★★★★</div>
-                        </div>
-                        <p>We needed an efficient system, not just a cheap one. The final stack now stays within our power budget with better density.</p>
-                        <div class="review-person">
-                            <div><strong>R. Kwon</strong><small>Energy manager</small></div>
-                        </div>
-                    </article>
-
-                    <article class="review-card review-wide">
-                        <span class="purchase-badge">Facility upgrade<small>Q2 deployment</small></span>
-                        <div class="review-top">
-                            <div class="review-person">
-                                <div class="review-avatar">SW</div>
-                                <div><strong>Shaun W.</strong><small>Mining operator</small></div>
-                            </div>
-                        </div>
-                        <h3>We cut operating friction and improved output consistency within one quarter.</h3>
-                        <p>From hardware sourcing to installation and monitoring, the team handled each step with disciplined communication and fast follow-through.</p>
-                        <div class="review-person">
-                            <div><strong>New installation</strong><small>Texas site</small></div>
-                        </div>
-                        <img class="review-hydro" src="assets/img/products/studio.png" alt="Mining rig in a facility" />
-                    </article>
-
-                    <article class="review-card review-delivery">
-                        <time>Since 2025</time>
-                        <h3>Support built for production.</h3>
-                        <p>Monitoring, replacement planning, and fast turnaround from the same team that specified the machine.</p>
-                        <div class="stars" aria-label="5 stars">★★★★★</div>
-                        <img src="assets/hero-v23/assets/scroll-miner/closed.png" alt="Mining housing" />
-                        <div class="review-rings" aria-hidden="true"></div>
-                    </article>
-
-                    <article class="review-card review-services">
-                        <div>
-                            <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3v30M3 18h30" stroke="currentColor" stroke-width="2" fill="none" /></svg>
-                            <strong>24/7</strong>
-                            <span>Monitoring</span>
-                        </div>
-                        <div>
-                            <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M8 22l6-6 5 5 9-10" fill="none" stroke="currentColor" stroke-width="2" /><path d="M27 11h3v3" fill="none" stroke="currentColor" stroke-width="2" /></svg>
-                            <strong>96%</strong>
-                            <span>Uptime</span>
-                        </div>
-                        <div>
-                            <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3a10 10 0 0 1 10 10c0 8-10 20-10 20S8 21 8 13a10 10 0 0 1 10-10Z" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="18" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2" /></svg>
-                            <strong>3x</strong>
-                            <span>Coverage</span>
-                        </div>
-                    </article>
-
-                    <article class="review-card review-value">
-                        <div class="review-bottom">
-                            <div>
-                                <h3>Fleet value</h3>
-                                <p>Smarter procurement and preventive maintenance translated into a clearer monthly return profile.</p>
-                            </div>
-                            <div class="stars" aria-label="5 stars">★★★★★</div>
-                        </div>
-                    </article>
-
-                    <article class="review-card review-profit">
-                        <div class="profit-icon" aria-hidden="true">▣</div>
-                        <div>
-                            <h3>Quarterly gains</h3>
-                            <p>Lower maintenance drain and stronger power efficiency improved output across the entire fleet.</p>
-                        </div>
-                        <img src="assets/hero-v23/assets/scroll-miner/open.png" alt="Quarterly gains layout" />
-                    </article>
-
-                    <article class="review-card review-rating">
-                        <strong>4.9/5</strong>
-                        <div class="stars" aria-label="5 stars">★★★★★</div>
-                        <p>Average client rating based on deployment, maintenance, and support experience.</p>
-                    </article>
-                </div>
-            </section>
-        </section>
     </main>
 
-    <footer class="mining-footer" id="navigation-target-5">
-        <div class="journey-frame">
-            <div class="journey-visual">
-                <div class="journey-disc" aria-hidden="true"></div>
-                <img src="assets/img/products/studio.png" alt="Bitcoin mining infrastructure" />
-                <div class="journey-orbit" aria-hidden="true"></div>
-            </div>
-            <div class="journey-copy" id="contact">
-                <h2>From <span>facility</span> to yield.</h2>
-                <p class="journey-intro">We design the hardware, support, and monitoring stack behind serious mining operations.</p>
-                <div class="journey-benefits">
-                    <div>
-                        <span aria-hidden="true">
-                            <svg viewBox="0 0 24 24"><path d="M5 18V7m7 11V4m7 14v-8"/></svg>
-                        </span>
-                        <h3>Operational clarity</h3>
-                        <p>Clean site reporting and machine health benchmarks from day one.</p>
-                    </div>
-                    <div>
-                        <span aria-hidden="true">
-                            <svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16"/></svg>
-                        </span>
-                        <h3>Lower downtime</h3>
-                        <p>Fast diagnostics and repair planning keep your fleet online longer.</p>
-                    </div>
-                    <div>
-                        <span aria-hidden="true">
-                            <svg viewBox="0 0 24 24"><path d="M6 16.5 11 11l3 3 5-8"/></svg>
-                        </span>
-                        <h3>Better yield</h3>
-                        <p>Smarter power and cooling decisions increase long-term efficiency.</p>
-                    </div>
-                    <div>
-                        <span aria-hidden="true">
-                            <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
-                        </span>
-                        <h3>Custom plans</h3>
-                        <p>Hardware, hosting, and repair packages built around your site profile.</p>
-                    </div>
-                </div>
-                <a class="journey-button" href="#top">Book a strategy call <span>↗</span></a>
-            </div>
-        </div>
-    </footer>
 
     <footer class="footer">
         <span>Bitcoin Miners / 2026</span><span>Built for serious operators</span>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
-    <script src="assets/hero-v23/hero.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script defer src="assets/hero-v23/hero.js"></script>
 </body>
 
 </html>
